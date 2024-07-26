@@ -56,6 +56,17 @@ function App(): JSX.Element {
 
   useGSAP(
     () => {
+      gsap.fromTo(
+        containerRef.current,
+        { opacity: 0, clipPath: "polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)" },
+        {
+          duration: 2,
+          opacity: 1,
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+          ease: "expo.inOut",
+        }
+      );
+
       tl.current = gsap
         .timeline()
         .set(titleContainerRef.current, { x: "-50%", y: "-50%" })
@@ -98,6 +109,7 @@ function App(): JSX.Element {
           },
           "experiences"
         )
+        .set(introductionTextRef.current, { display: "none" })
         .to(
           backgroundAiImageRef.current,
           {
@@ -107,6 +119,7 @@ function App(): JSX.Element {
           },
           "experiences+=1"
         )
+        .set(backgroundAiImageRef.current, { display: "none" })
         .to(
           titleContainerRef.current,
           {
@@ -168,6 +181,7 @@ function App(): JSX.Element {
           },
           "experiences+=2.6"
         )
+        .set(frenchflairRef.current, { display: "none" })
         .to(
           paymenowRef.current,
           {
@@ -178,6 +192,7 @@ function App(): JSX.Element {
           },
           "experiences+=2.7"
         )
+        .set(paymenowRef.current, { display: "none" })
         .to(
           musicaRef.current,
           {
@@ -188,6 +203,7 @@ function App(): JSX.Element {
           },
           "experiences+=2.8"
         )
+        .set(musicaRef.current, { display: "none" })
         .to(
           titleContainerRef.current,
           {
@@ -251,7 +267,6 @@ function App(): JSX.Element {
             y: "-50%",
             z: -1000,
             opacity: 0,
-            filter: "blur(5px)",
           },
           {
             duration: 1,
@@ -263,7 +278,6 @@ function App(): JSX.Element {
             y: "-50%",
             z: 0,
             opacity: 1,
-            filter: "blur(0px)",
             // overwrite: true,
           },
           "certification+=1.5"
@@ -280,11 +294,11 @@ function App(): JSX.Element {
             y: "-50%",
             z: -1000,
             opacity: 0,
-            filter: "blur(5px)",
             // overwrite: true,
           },
           "certification+=3"
         )
+        .set(opquastRef.current, { display: "none" })
         .to(
           titleContainerRef.current,
           {
@@ -397,6 +411,7 @@ function App(): JSX.Element {
           },
           "temoignages+=3.5"
         )
+        .set(temoignage1sectionRef.current, { display: "none" })
         .fromTo(
           temoignage2sectionRef.current,
           {
@@ -456,6 +471,7 @@ function App(): JSX.Element {
           },
           "temoignages+=7"
         )
+        .set(temoignage2sectionRef.current, { display: "none" })
         .to(
           titleChangeRef.current,
           {
@@ -491,7 +507,8 @@ function App(): JSX.Element {
             y: "100%",
           },
           "<"
-        );
+        )
+        .set(scrollIconRef.current, { display: "none" });
 
       tl.current.pause();
       tl.current.seek(0.1);
@@ -502,20 +519,13 @@ function App(): JSX.Element {
 
   const calculateScrollPercent = () => {
     if (!scrollRef.current || !tl.current) return;
-    const scrollTop = scrollRef.current.scrollTop;
-    const scrollHeight = scrollRef.current.scrollHeight;
-    const clientHeight = scrollRef.current.clientHeight;
+
+    const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
     const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
 
     const timelinePercent = (scrollPercent / 100) * tl.current.duration();
     tl.current.progress(timelinePercent / tl.current.duration());
-    // console.log(
-    //   "Scroll:",
-    //   Math.round(scrollPercent),
-    //   "Timeline Percent:",
-    //   Math.round((timelinePercent / tl.current.duration()) * 100)
-    // );
   };
   const mouseMove = (event: MouseEvent) => {
     const x = event.clientX / window.innerWidth - 0.5;
@@ -565,9 +575,38 @@ function App(): JSX.Element {
         className=" h-screen w-full fixed pointer-events-none top-0 left-0 [perspective:800px]"
         ref={containerRef}
       >
-        <h2 className=" top-10 z-10 right-10 absolute text-xl sm:text-xxl h-[15vh] font-primaryFont">
+        <h2 className=" top-10 z-10 right-10 absolute text-xl sm:text-xxl font-primaryFont">
           AKIRA VALADE
         </h2>
+        <p className=" bottom-10 z-10 left-10 absolute p-0 m-0  text-xl font-primaryFont">
+          <a href="https://akirav.art" className=" pointer-events-auto ">
+            <svg
+              className="h-[3vh] inline-block mr-2 scale-150"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g id="SVGRepo_tracerCarrier"></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M7 17L16.5 7.5M17 7H8M17 7V16"
+                  stroke="#ffffff"
+                  strokeWidth="1"
+                  strokeLinecap="square"
+                  strokeLinejoin="miter"
+                ></path>
+              </g>
+            </svg>
+            {
+              {
+                fr: "Projets",
+                en: "Projects",
+                jp: "プロジェクト",
+              }[language]
+            }
+          </a>
+        </p>
         <section className="absolute pointer-events-auto bottom-10 right-10 text-xl z-10 select-none cursor-pointer	">
           <div onClick={() => handleLanguageClick()}>
             {
@@ -1183,7 +1222,7 @@ function App(): JSX.Element {
           ref={backToProjectsRef}
         >
           <h2 className="text-white text-center text-xxxl">
-            <a href="" className=" pointer-events-auto ">
+            <a href="https://akirav.art" className=" pointer-events-auto ">
               <svg
                 className="h-[13vh] inline-block"
                 viewBox="0 0 24 24"
